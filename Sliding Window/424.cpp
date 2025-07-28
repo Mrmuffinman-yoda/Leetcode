@@ -3,39 +3,39 @@
 #include <cmath>
 #include <algorithm>
 #include <cassert>
-#include <unordered_map>
+#include <array>
 using namespace std;
 
 class Solution
 {
 public:
-    int mostRepeatedChar(unordered_map<char, int> seen)
+    int mostRepeatedChar(array<int, 26> &seen)
     {
         int mostRepeatedChar{0};
-        for (auto [_, j] : seen)
+        for (auto x : seen)
         {
-            mostRepeatedChar = max(mostRepeatedChar, j);
+            mostRepeatedChar = max(mostRepeatedChar, x);
         }
         return mostRepeatedChar;
     }
 
     int characterReplacement(string s, int k)
     {
-        unordered_map<char, int> seen{};
+        array<int, 26> seen{};
         int result{0};
         size_t left{0};
 
         for (size_t right{0}; right <= s.size() - 1; right++)
         {
-            char16_t rightChar = s[right];
+            int rightChar = s[right];
             // add the character to map
-            seen[rightChar]++;
+            seen[rightChar - 65]++;
 
             while ((right - left + 1) - mostRepeatedChar(seen) > k)
             {
-                char16_t leftChar = s[left];
+                int leftChar = s[left];
 
-                seen[leftChar]--;
+                seen[leftChar - 65]--;
                 left++;
             }
             result = max(result, static_cast<int>(right - left + 1));
