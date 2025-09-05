@@ -6,28 +6,30 @@ class Solution {
  public:
   vector<vector<int>> combinationSum(vector<int> &candidates, int target) {
     vector<vector<int>> answer = {};
-    backtrack(candidates, target, 0, {}, answer);
+    vector<int> currSol = {};
+    backtrack(candidates, target, 0, currSol, answer, 0);
     return answer;
   }
 
   void backtrack(vector<int> &candidates,
                  int target,
                  int index,
-                 vector<int> currSol,
-                 vector<vector<int>> &answer) {
+                 vector<int> &currSol,
+                 vector<vector<int>> &answer,
+                 int count) {
     int sum = 0;
-    for (auto x : currSol) sum += x;
-    if (sum == target) {
+    if (count == target) {
       answer.push_back(currSol);
       return;
-    } else if (sum > target) {
+    } else if (count > target) {
       return;
     }
 
     for (int num = index; num < candidates.size(); num++) {
-      currSol.push_back(candidates[num]);
+      int numToAdd = candidates[num];
+      currSol.push_back(numToAdd);
 
-      backtrack(candidates, target, num, currSol, answer);
+      backtrack(candidates, target, num, currSol, answer, count + numToAdd);
 
       currSol.pop_back();
     }
